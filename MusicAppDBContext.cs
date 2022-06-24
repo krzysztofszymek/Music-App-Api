@@ -4,13 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Music_App_Api.Entities;
+using Microsoft.Extensions.Configuration;
 
 namespace Music_App_Api
 {
     public class MusicAppDBContext : DbContext
     {
-        private readonly string _connectionString =
-            "Server=(localdb)\\mssqllocaldb;Database=MusicAppDb;Trusted_Connection=True;";
+        public IConfiguration Configuration { get; }
+
+        public MusicAppDBContext(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Playlist> Playlists { get; set; }
@@ -33,11 +38,17 @@ namespace Music_App_Api
                 .Property(p => p.Password)
                 .IsRequired();
 
+
             // Playlist -----------------
 
             modelBuilder.Entity<Playlist>()
                 .Property(p => p.Name)
                 .IsRequired();
+
+            modelBuilder.Entity<Playlist>()
+                .HasOne(p => p.User)
+                .WithMany(u => u.Playlists)
+                .HasForeignKey(k => k.UserId);
 
             // Song ---------------------
 
@@ -51,7 +62,15 @@ namespace Music_App_Api
 
             // Genre --------------------
 
+            modelBuilder.Entity<Genre>()
+                .Property(g => g.Name)
+                .IsRequired();
+        }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            var connectionString = Configuration["ConnectionStrings:ApiContext"];
+            optionsBuilder.UseSqlServer(connectionString);
         }
     }
 }
