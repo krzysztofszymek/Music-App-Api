@@ -10,8 +10,8 @@ using Music_App_Api;
 namespace Music_App_Api.Migrations
 {
     [DbContext(typeof(MusicAppDBContext))]
-    [Migration("20220627130338_song-playlist-delete")]
-    partial class songplaylistdelete
+    [Migration("20220628101201_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,8 +43,9 @@ namespace Music_App_Api.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Name")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -83,9 +84,6 @@ namespace Music_App_Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PlaylistId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("ReleaseDate")
                         .HasColumnType("datetime2");
 
@@ -94,8 +92,6 @@ namespace Music_App_Api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PlaylistId");
 
                     b.ToTable("Songs");
                 });
@@ -124,6 +120,21 @@ namespace Music_App_Api.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("PlaylistSong", b =>
+                {
+                    b.Property<int>("PlaylistsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SongsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PlaylistsId", "SongsId");
+
+                    b.HasIndex("SongsId");
+
+                    b.ToTable("PlaylistSong");
+                });
+
             modelBuilder.Entity("GenreSong", b =>
                 {
                     b.HasOne("Music_App_Api.Entities.Genre", null)
@@ -150,16 +161,19 @@ namespace Music_App_Api.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Music_App_Api.Entities.Song", b =>
+            modelBuilder.Entity("PlaylistSong", b =>
                 {
                     b.HasOne("Music_App_Api.Entities.Playlist", null)
-                        .WithMany("Songs")
-                        .HasForeignKey("PlaylistId");
-                });
+                        .WithMany()
+                        .HasForeignKey("PlaylistsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("Music_App_Api.Entities.Playlist", b =>
-                {
-                    b.Navigation("Songs");
+                    b.HasOne("Music_App_Api.Entities.Song", null)
+                        .WithMany()
+                        .HasForeignKey("SongsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Music_App_Api.Entities.User", b =>

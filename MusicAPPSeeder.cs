@@ -25,7 +25,13 @@ namespace Music_App_Api
                     _dbContext.Genres.AddRange(genres);
 
                     var songs = GetSongs(genres);
+                    _dbContext.Songs.AddRange(songs);
 
+                    //var playlists = GetPlaylists(songs);
+                    //_dbContext.Playlists.AddRange(playlists);
+
+                    var users = GetUsers();
+                    _dbContext.Users.AddRange(users);
 
                     _dbContext.SaveChanges();
                 }
@@ -39,11 +45,29 @@ namespace Music_App_Api
                 new User() {
                     Login = "Test",
                     Email = "test@test.com",
-                    Password = "test123"
+                    Password = "test123",
+                    Playlists = new List<Playlist>()
                 }
             };
             return users;
         }
+
+        //private IEnumerable<Playlist> GetPlaylists(IEnumerable<Song> songs)
+        //{
+        //    var playlists = new List<Playlist>()
+        //    {
+        //        new Playlist()
+        //        {
+        //            Name = "Test Playlist",
+        //            UserId = 1,
+        //            Songs = new List<Song>()
+        //            {
+        //                songs.ElementAt(0)
+        //            }
+        //        }
+        //    };
+        //    return playlists;
+        //}
 
         private IEnumerable<Song> GetSongs(IEnumerable<Genre> genres)
         {
@@ -52,10 +76,14 @@ namespace Music_App_Api
                 {
                     Title = "New Song",
                     Author = "New Author",
-                    ReleaseDate = new DateTime(1, 1, 2020),
-                    Genres = 
+                    ReleaseDate = DateTime.Now,
+                    Genres = new List<Genre>()
+                    {
+                        genres.ElementAt(4),
+                        genres.ElementAt(3)
+                    }
                 }
-            }
+            };
             return songs;
         }
 
