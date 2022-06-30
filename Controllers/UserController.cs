@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Music_App_Api.Interfaces;
+using Music_App_Api.DTOs.User;
 
 namespace Music_App_Api.Controllers
 {
@@ -18,5 +19,11 @@ namespace Music_App_Api.Controllers
             _userService = userService;
         }
 
+        [HttpPost]
+        public ActionResult CreateUser([FromBody] CreateUserDTO dto)
+        {
+            var userId = _userService.CreateUser(dto);
+            return Created($"/api/user/{userId}", null);
+        }
     }
 }
