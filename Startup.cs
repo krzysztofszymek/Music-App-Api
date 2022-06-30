@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Music_App_Api.Interfaces;
+using Music_App_Api.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +32,10 @@ namespace Music_App_Api
 
             services.AddDbContext<MusicAppDBContext>();
             services.AddScoped<MusicAPPSeeder>();
+
+            services.AddScoped<IUserService, UserService>();
+
+            services.AddAutoMapper(this.GetType().Assembly);
 
             services.AddSwaggerGen(c =>
             {
