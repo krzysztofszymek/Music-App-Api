@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Music_App_Api.DTOs.User;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,10 +8,10 @@ namespace Music_App_Api.Interfaces
 {
     public interface IUserService
     {
-        int CreateUser();
-        void UpdateUser();
+        int CreateUser(CreateUserDTO dto);
+        void UpdateLogin();
         void RemoveUser();
-        void GetUser();
-        void UpdatePassword();
+        UserDTO GetUser();
+        void UpdatePassword(UpdatePasswordDTO dto);
     }
 }
