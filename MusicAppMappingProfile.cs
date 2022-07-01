@@ -13,6 +13,8 @@ namespace Music_App_Api
         public MusicAppMappingProfile()
         {
             CreateMap<User, UserDTO>();
+
+            CreateMap<CreateUserDTO, User>();
         }
     }
 }
