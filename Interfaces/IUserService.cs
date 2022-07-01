@@ -11,7 +11,8 @@ namespace Music_App_Api.Interfaces
         int CreateUser(CreateUserDTO dto);
         void UpdateLogin();
         void RemoveUser();
-        UserDTO GetUser();
+        UserDTO GetUserById(int userId);
+        List<UserDTO> GetAllUsers();
         void UpdatePassword(UpdatePasswordDTO dto);
     }
 }

@@ -25,5 +25,12 @@ namespace Music_App_Api.Controllers
             var userId = _userService.CreateUser(dto);
             return Created($"/api/user/{userId}", null);
         }
+
+        [HttpGet("{id}")]
+        public ActionResult GetUserbyId([FromRoute] int userId) 
+        {
+            UserDTO user = _userService.GetUserById(userId);
+            return Ok(user);
+        }
     }
 }

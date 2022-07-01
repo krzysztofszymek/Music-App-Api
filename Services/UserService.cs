@@ -22,12 +22,6 @@ namespace Music_App_Api.Services
 
         public int CreateUser(CreateUserDTO dto)
         {
-            if (_dbContext.Users.Any(u => u.Email == dto.Email))
-                throw new Exception("User with this Email already exists");
-
-            if (_dbContext.Users.Any(u => u.Login == dto.Login))
-                throw new Exception("User with this Login already exists");
-
             var newUser = _mapper.Map<User>(dto);
 
             _dbContext.Users.Add(newUser);
@@ -36,9 +30,20 @@ namespace Music_App_Api.Services
             return newUser.Id;
         }
 
-        public UserDTO GetUser()
+        public List<UserDTO> GetAllUsers()
         {
             throw new NotImplementedException();
+        }
+
+        public UserDTO GetUserById(int userId)
+        {
+            var user = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
+
+            // Add Notfound exception
+
+            var userDTO = _mapper.Map<UserDTO>(user);
+
+            return userDTO;
         }
 
         public void RemoveUser()
