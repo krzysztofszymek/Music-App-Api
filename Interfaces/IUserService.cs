@@ -9,10 +9,10 @@ namespace Music_App_Api.Interfaces
     public interface IUserService
     {
         int CreateUser(CreateUserDTO dto);
-        void UpdateLogin();
-        void RemoveUser();
+        void RemoveUserById(int userId);
         UserDTO GetUserById(int userId);
         List<UserDTO> GetAllUsers();
-        void UpdatePassword(UpdatePasswordDTO dto);
+        void UpdateLogin(int userId, string login);
+        void UpdatePassword(int userId, UpdatePasswordDTO dto);
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Music_App_Api.Interfaces;
+using Music_App_Api.Middleware;
 using Music_App_Api.Services;
 using System;
 using System.Collections.Generic;
@@ -33,9 +34,14 @@ namespace Music_App_Api
             services.AddDbContext<MusicAppDBContext>();
             services.AddScoped<MusicAPPSeeder>();
 
+            // Interfaces
             services.AddScoped<IUserService, UserService>();
 
+            // Auto Mapper
             services.AddAutoMapper(this.GetType().Assembly);
+
+            // Error handler
+            services.AddScoped<ErrorHandler>();
 
             services.AddSwaggerGen(c =>
             {
@@ -53,6 +59,8 @@ namespace Music_App_Api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Music_App_Api v1"));
             }
+
+            app.UseMiddleware<ErrorHandler>();
 
             app.UseHttpsRedirection();
 
