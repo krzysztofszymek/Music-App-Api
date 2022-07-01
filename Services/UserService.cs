@@ -32,12 +32,15 @@ namespace Music_App_Api.Services
 
         public List<UserDTO> GetAllUsers()
         {
-            throw new NotImplementedException();
+            var users = _dbContext.Users;
+            List<UserDTO> usersDTO = _mapper.Map<List<UserDTO>>(users);
+
+            return usersDTO;
         }
 
         public UserDTO GetUserById(int userId)
         {
-            var user = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
+            var user = _dbContext.Users.First(u => u.Id == userId);
 
             // Add Notfound exception
 

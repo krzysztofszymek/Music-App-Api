@@ -9,7 +9,7 @@ using Music_App_Api.DTOs.User;
 
 namespace Music_App_Api.Controllers
 {
-    [Route("api/user")]
+    [Route("api/users")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -19,18 +19,25 @@ namespace Music_App_Api.Controllers
             _userService = userService;
         }
 
-        [HttpPost]
+        [HttpPost("register")]
         public ActionResult CreateUser([FromBody] CreateUserDTO dto)
         {
             var userId = _userService.CreateUser(dto);
             return Created($"/api/user/{userId}", null);
         }
 
-        [HttpGet("{id}")]
-        public ActionResult GetUserbyId([FromRoute] int userId) 
+        [HttpGet("{userId}")]
+        public ActionResult<UserDTO> GetUserbyId([FromRoute] int userId) 
         {
             UserDTO user = _userService.GetUserById(userId);
             return Ok(user);
+        }
+
+        [HttpGet]
+        public ActionResult<List<UserDTO>> GetAllUsers()
+        {
+            List<UserDTO> users = _userService.GetAllUsers();
+            return Ok(users);
         }
     }
 }
