@@ -21,6 +21,11 @@ namespace Music_App_Api.Middleware
                 context.Response.StatusCode = 400;
                 await context.Response.WriteAsync(badRequestException.Message);
             }
+            catch (AlreadyExistsException alreadyExistsException)
+            {
+                context.Response.StatusCode = 403;
+                await context.Response.WriteAsync(alreadyExistsException.Message);
+            }
             catch (NotFoundException notFoundException)
             {
                 context.Response.StatusCode = 404;

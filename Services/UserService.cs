@@ -45,10 +45,7 @@ namespace Music_App_Api.Services
 
         public UserDTO GetUserById(int userId)
         {
-            var user = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
-
-            if (user is null)
-                throw new NotFoundException("User not found");
+            var user = GetUser(userId);
 
             var userDTO = _mapper.Map<UserDTO>(user);
 
@@ -57,9 +54,7 @@ namespace Music_App_Api.Services
 
         public void RemoveUserById(int userId)
         {
-            var user = _dbContext.Users.First(u => u.Id == userId);
-
-            // Notfound Exception
+            var user = GetUser(userId);
 
             _dbContext.Remove(user);
             _dbContext.SaveChanges();
@@ -67,19 +62,36 @@ namespace Music_App_Api.Services
 
         public void UpdateLogin(int userId, string newLogin)
         {
-            var user = _dbContext.Users.First(u => u.Id == userId);
+            var user = GetUser(userId);
 
-            if (newLogin != user.Login)
-                user.Login = newLogin;
-            else
-                throw new Exception();
+            user.Login = newLogin;
 
             _dbContext.SaveChanges();
         }
 
         public void UpdatePassword(int userId, UpdatePasswordDTO dto)
         {
-            throw new NotImplementedException();
+            var user = GetUser(userId);
+
+            if (dto.NewPassword != dto.ConfirmNewPassword)
+                throw new AlreadyExistsException("New password and it's confirmation has to be the same");
+
+            if (dto.NewPassword == user.Password)
+                throw new AlreadyExistsException("The new password has to be different than the last.");
+            
+            user.Password = dto.NewPassword;
+
+            _dbContext.SaveChanges();
+        }
+
+        public User GetUser(int userId)
+        {
+            var user = _dbContext.Users.First(u => u.Id == userId);
+
+            if (user is null)
+                throw new NotFoundException("User not found.");
+
+            return user;
         }
     }
 }
