@@ -3,10 +3,9 @@ using Music_App_Api.DTOs.User;
 using Music_App_Api.Entities;
 using Music_App_Api.Exceptions;
 using Music_App_Api.Interfaces;
-using System;
+using Music_App_Api.Models.DTOs.User;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Music_App_Api.Services
 {
@@ -60,13 +59,20 @@ namespace Music_App_Api.Services
             _dbContext.SaveChanges();
         }
 
-        public void UpdateLogin(int userId, string newLogin)
+        public UserDTO UpdateLogin(int userId, UpdateLoginDTO dto)
         {
             var user = GetUser(userId);
 
-            user.Login = newLogin;
+            if (user.Login == dto.Login)
+                throw new AlreadyExistsException("New login has to be different from current Login");
+
+            user.Login = dto.Login;
 
             _dbContext.SaveChanges();
+
+            var userDTO = _mapper.Map<UserDTO>(user);
+
+            return userDTO;
         }
 
         public void UpdatePassword(int userId, UpdatePasswordDTO dto)

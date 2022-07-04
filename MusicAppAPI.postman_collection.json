@@ -34,7 +34,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/users/1",
+							"raw": "https://localhost:5001/api/users/5",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -43,7 +43,7 @@
 							"path": [
 								"api",
 								"users",
-								"1"
+								"5"
 							]
 						}
 					},
@@ -74,6 +74,68 @@
 								"api",
 								"users",
 								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateUserLogin",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"NewLogin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/users/2/login",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"users",
+								"2",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ChangeUserPassword",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"oldPassword\": \"string123\",\r\n  \"newPassword\": \"newPassword\",\r\n  \"confirmNewPassword\": \"newPassword\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/users/2/password",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"users",
+								"2",
+								"password"
 							]
 						}
 					},

@@ -1,8 +1,6 @@
 ﻿using Music_App_Api.DTOs.User;
-using System;
+using Music_App_Api.Models.DTOs.User;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Music_App_Api.Interfaces
 {
@@ -12,7 +10,7 @@ namespace Music_App_Api.Interfaces
         void RemoveUserById(int userId);
         UserDTO GetUserById(int userId);
         List<UserDTO> GetAllUsers();
-        void UpdateLogin(int userId, string login);
+        UserDTO UpdateLogin(int userId, UpdateLoginDTO login);
         void UpdatePassword(int userId, UpdatePasswordDTO dto);
     }
 }
